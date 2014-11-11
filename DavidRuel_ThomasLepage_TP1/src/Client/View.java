@@ -1,4 +1,4 @@
-package view;
+package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.GameController;
 import ObserverPattern.Observer;
 
 public class View extends JFrame implements Observer
@@ -40,9 +39,10 @@ public class View extends JFrame implements Observer
 	ImageIcon red;
 	ImageIcon green;
 	
-	private GameController controller;
+	//private GameController controller;
+	private ClientController controller;
 
-	public View(GameController controller)
+	public View(ClientController controller)
 	{
 		this.red = new ImageIcon(IMAGE_PATH + "red.jpg");
 		this.green = new ImageIcon(IMAGE_PATH + "green.jpg");

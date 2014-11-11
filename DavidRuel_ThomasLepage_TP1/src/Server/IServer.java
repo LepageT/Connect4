@@ -1,6 +1,6 @@
 package Server;
 
-import root.client.MyServerObserver;
+import Client.MyServerObserver;
 
 public interface IServer
 {

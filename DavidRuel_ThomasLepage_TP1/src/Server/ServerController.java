@@ -2,12 +2,13 @@ package Server;
 
 import java.io.IOException;
 
-import view.View;
+import Client.MyServerObserver;
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
 import net.sf.lipermi.net.Server;
 import ObserverPattern.Observer;
 import Server.Model.GameModel;
+
 public class ServerController extends Server implements IServer 
 {
 	public static final int SERVER_PORT = 12345;
@@ -87,6 +88,6 @@ public class ServerController extends Server implements IServer
 	public void registerObserver(MyServerObserver observer) 
 	{
 		// TODO Auto-generated method stub
-		this.game.addListener(observer);
+		this.game.registerObserver(observer);
 	}
 }

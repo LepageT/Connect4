@@ -2,7 +2,7 @@ package Server.Model;
 
 import java.util.LinkedList;
 
-import root.client.MyServerObserver;
+import Client.MyServerObserver;
 import ObserverPattern.Observable;
 
 public class GameModel extends Observable

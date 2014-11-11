@@ -1,7 +1,7 @@
 package controller;
 
 import Server.Model.GameModel;
-import view.View;;
+import Client.View;
 
 public class GameController
 {
@@ -42,7 +42,7 @@ public class GameController
 			{
 				this.view.dispose();
 			}
-			this.view = new View(this);
+			//this.view = new View(this);
 			this.view.initBoard(r, c);
 			
 			this.game.addListener(this.view);
