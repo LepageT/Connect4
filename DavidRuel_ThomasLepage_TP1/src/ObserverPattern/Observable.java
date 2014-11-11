@@ -16,11 +16,11 @@ public class Observable {
 		this.observers.remove(observer);
 	}
 	
-	public void notifyChangeTurn()
+	public void notifyChangeTurn(int turn)
 	{
 		for(Observer observer : this.observers)
 		{
-			observer.update();
+			observer.updatePlayerTurn(turn);
 		}
 	}
 	
