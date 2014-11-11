@@ -1,7 +1,7 @@
 package controller;
 
+import Client.View;
 import model.GameModel;
-import view.View;;
 
 public class GameController
 {

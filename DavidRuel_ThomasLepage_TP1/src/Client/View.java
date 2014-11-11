@@ -1,4 +1,4 @@
-package view;
+package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -40,9 +40,10 @@ public class View extends JFrame implements Observer
 	ImageIcon red;
 	ImageIcon green;
 	
-	private GameController controller;
+	//private GameController controller;
+	private ClientController controller;
 
-	public View(GameController controller)
+	public View(ClientController controller)
 	{
 		this.red = new ImageIcon(IMAGE_PATH + "red.jpg");
 		this.green = new ImageIcon(IMAGE_PATH + "green.jpg");
