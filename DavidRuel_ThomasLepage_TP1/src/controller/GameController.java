@@ -46,7 +46,6 @@ public class GameController
 			this.view.initBoard(r, c);
 			
 			this.game.addListener(this.view);
-			this.view.setGame(this.game);
 		}
 		catch(Exception e)
 		{

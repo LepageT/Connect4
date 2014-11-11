@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.GameModel;
 import controller.GameController;
 import ObserverPattern.Observer;
 
@@ -35,8 +34,8 @@ public class View extends JFrame implements Observer
 
 	private final JTextField message = new JTextField(20);
 	private final JPanel centerPane = new JPanel();
-
-	private GameModel game;
+	
+	private int playerTurn;
 	
 	ImageIcon red;
 	ImageIcon green;
@@ -45,7 +44,6 @@ public class View extends JFrame implements Observer
 
 	public View(GameController controller)
 	{
-		//TODO temp
 		this.red = new ImageIcon(IMAGE_PATH + "red.jpg");
 		this.green = new ImageIcon(IMAGE_PATH + "green.jpg");
 
@@ -67,11 +65,6 @@ public class View extends JFrame implements Observer
 		this.setVisible(true);
 	}
 	
-	public void setGame(GameModel game)
-	{
-		this.game = game;
-	}
-
 	private void createMenu()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -164,10 +157,10 @@ public class View extends JFrame implements Observer
 		public void actionPerformed(ActionEvent arg0)
 		{
 			System.out.println("Action on menu");
-			int click = JOptionPane.showConfirmDialog(null, "Joueur " + game.getPlayerTurn() + " voulez-vous vraiment abandonner?","Abandon",JOptionPane.YES_NO_OPTION);
+			int click = JOptionPane.showConfirmDialog(null, "Joueur " + playerTurn + " voulez-vous vraiment abandonner?","Abandon",JOptionPane.YES_NO_OPTION);
 			if(click == JOptionPane.YES_OPTION)
 			{
-				updateMatchWinBy(game.getNextPlayer());
+				updateMatchWinBy(playerTurn==1?2:1);
 			}
 		}
 	}
@@ -195,9 +188,10 @@ public class View extends JFrame implements Observer
 	}
 
 	@Override
-	public void update() {
+	public void updatePlayerTurn(int turn) {
 		// TODO Auto-generated method stub
-		this.message.setText("Tour du joueur " + this.game.getPlayerTurn());
+		playerTurn = turn;
+		this.message.setText("Tour du joueur " + turn);
 	}
 
 	@Override

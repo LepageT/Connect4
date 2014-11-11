@@ -39,7 +39,42 @@ public class GameModel extends Observable
 	
 	public void addToken(int col)
 	{
-		Token token = new Token(this.turn);
+		if(col < this.width && col >= 0)
+		{	
+			Token token = new Token(this.turn);
+			int row = this.addTokenToCol(token, col);
+			
+			notifyObserversTokenAdded(col, row, this.turn);
+			
+			if(this.checkWin(col, row, token))
+			{
+				notifyMatchWin(this.turn);		
+			}
+			else
+			{
+				this.turn = this.turn==1?2:1;
+			}
+			
+			if(this.checkBoardFull())
+			{
+				notifyMatchNul();
+			}
+			notifyChangeTurn(this.turn);
+			
+			if(row >= this.height - 1)
+			{
+				notifyObserversColFull(col);
+			}
+		}
+		else
+		{
+			throw new IndexOutOfBoundsException();
+		}
+
+	}
+	
+	private int addTokenToCol(Token token, int col)
+	{
 		int row = 0;
 		
 		for(int i = 0; i < this.height; i++)
@@ -48,32 +83,11 @@ public class GameModel extends Observable
 			{
 				this.tokens[col][i] = token;
 				row = i;
-				break;
+				return row;
 			}
 		}
 		
-		notifyObserversTokenAdded(col, row, this.turn);
-		
-		if(this.checkWin(col, row, token))
-		{
-			notifyMatchWin(this.turn);		
-		}
-		else
-		{
-			this.turn = this.turn==1?2:1;
-		}
-		
-		if(this.checkBoardFull())
-		{
-			notifyMatchNul();
-		}
-		notifyChangeTurn();
-		
-		if(row >= this.height - 1)
-		{
-			notifyObserversColFull(col);
-		}
-
+		return row;
 	}
 	
 	private boolean checkWin(int col, int row, Token t)
@@ -168,16 +182,6 @@ public class GameModel extends Observable
 			throw new ArrayIndexOutOfBoundsException();
 		}
 		return this.tokens[col][row];
-	}
-	
-	public int getPlayerTurn()
-	{
-		return this.turn;
-	}
-	
-	public int getNextPlayer()
-	{
-		return this.turn==1?2:1;
 	}
 	
 	private boolean checkBoardFull()
