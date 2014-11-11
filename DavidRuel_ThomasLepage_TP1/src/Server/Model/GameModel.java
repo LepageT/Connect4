@@ -1,5 +1,8 @@
 package Server.Model;
 
+import java.util.LinkedList;
+
+import root.client.MyServerObserver;
 import ObserverPattern.Observable;
 
 public class GameModel extends Observable
@@ -13,8 +16,12 @@ public class GameModel extends Observable
 	
 	private int turn;
 	
+	private LinkedList<MyServerObserver> observers;
+
 	public GameModel(int r, int c, int v) throws Exception
 	{
+		this.observers = new LinkedList<MyServerObserver>();
+
 		if(c < 2)
 		{
 			throw new Exception("Le nombre de colones doit être supérieur à 1.");
@@ -34,6 +41,11 @@ public class GameModel extends Observable
 		this.winConditionSequence = v;
 
 		this.turn = 1;
+	}
+	
+	public void registerObserver(MyServerObserver observer)
+	{
+		this.observers.add(observer);
 	}
 	
 	public void addToken(int col)
