@@ -1,5 +1,5 @@
 package Server;
 
-public class IServer {
+public interface IServer {
 
 }
