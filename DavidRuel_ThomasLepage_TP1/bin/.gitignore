@@ -2,5 +2,9 @@
 /Server/
 /controller/
 /model/
+<<<<<<< HEAD
+/Model/
+=======
 /view/
 /Client/
+>>>>>>> 649833ab2acd2219d921496b15a802dad19cf418

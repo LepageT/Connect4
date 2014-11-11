@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.GameController;
 import ObserverPattern.Observer;
 
 public class View extends JFrame implements Observer

@@ -1,4 +1,4 @@
-package model;
+package Server.Model;
 
 public class Token 
 {

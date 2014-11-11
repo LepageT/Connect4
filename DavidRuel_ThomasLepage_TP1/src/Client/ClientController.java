@@ -1,7 +1,7 @@
 package Client;
 
-import root.ClientController;
-import model.GameModel;
+import Server.IServer;
+import Server.ServerController;
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
 import net.sf.lipermi.net.Client;
@@ -11,8 +11,8 @@ public class ClientController implements MyServerObserver
 {
 	View myView;
 	
-	//ServerController serverController;
-	//IServer stub;
+	ServerController serverController;
+	IServer stub;
 	
 	ClientController()
 	{
@@ -32,18 +32,18 @@ public class ClientController implements MyServerObserver
 	
 	
 	
-	/*
+	
 	public void restartGame()
 	{
-		this.startGame(this.game.getWidth(), this.game.getHeight(), this.game.getWinCondition());
+		this.stub.restartGame();
 	}
 	
 	
 	public void addTokenToCol(int col)
 	{
-		this.game.addToken(col);
+		this.stub.addTokenToCol(col);
 	}
-	 */
+	 
 
 
 
