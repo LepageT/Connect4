@@ -1,5 +1,7 @@
 package Client;
 
+import java.io.IOException;
+
 import Server.IServer;
 import Server.ServerController;
 import net.sf.lipermi.exception.LipeRMIException;
@@ -22,6 +24,26 @@ public class ClientController implements MyServerObserver
 		
 		CallHandler callHandler = new CallHandler();
 		
+		try 
+		{
+			callHandler.registerGlobal(IServer.class, this);
+			
+			Client client = new Client("127.0.0.1", ServerController.SERVER_PORT, callHandler);
+			
+			this.stub = client.getGlobal(IServer.class);
+			
+			this.stub.registerObserver(this);
+			
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (LipeRMIException e1) 
+		{
+			e1.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -29,7 +51,6 @@ public class ClientController implements MyServerObserver
 	{
 		new ClientController();
 	}
-	
 	
 	
 	
@@ -45,10 +66,7 @@ public class ClientController implements MyServerObserver
 	}
 	 
 
-
-
-
-
+	
 	@Override
 	public void updatePlayerTurn(int playerNo) 
 	{
