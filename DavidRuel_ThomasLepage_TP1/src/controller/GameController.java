@@ -1,6 +1,6 @@
 package controller;
 
-import model.GameModel;
+import Server.Model.GameModel;
 import view.View;;
 
 public class GameController

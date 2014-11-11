@@ -1,6 +1,5 @@
-package model;
+package Server.Model;
 
-import model.Direction;
 import ObserverPattern.Observable;
 
 public class GameModel extends Observable
