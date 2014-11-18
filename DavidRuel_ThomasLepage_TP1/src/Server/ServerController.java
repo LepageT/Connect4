@@ -88,6 +88,7 @@ public class ServerController extends Server implements IServer
 	{
 		// TODO Auto-generated method stub
 		this.game.registerObserver(observer);
+		// TODO send player turn
 		observer.initBoard(this.game.getHeight(), this.game.getWidth());
 	}
 	
