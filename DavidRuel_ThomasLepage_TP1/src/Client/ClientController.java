@@ -1,5 +1,7 @@
 package Client;
 
+import java.io.IOException;
+
 import Server.IServer;
 import Server.ServerController;
 import net.sf.lipermi.exception.LipeRMIException;
@@ -13,7 +15,8 @@ public class ClientController implements MyServerObserver
 	
 	ServerController serverController;
 	IServer stub;
-	
+	private boolean isRunning = true;
+
 	ClientController()
 	{
 		View view = new View(this);
@@ -21,7 +24,35 @@ public class ClientController implements MyServerObserver
 		this.myView = view;
 		
 		CallHandler callHandler = new CallHandler();
-		
+		try 
+		{		
+			callHandler.registerGlobal(MyServerObserver.class, this);
+
+			Client client = new Client("127.0.0.1", ServerController.SERVER_PORT, callHandler);
+			stub = client.getGlobal(IServer.class);
+			stub.registerObserver(this);
+			
+			while(isRunning)
+			{}
+			try 
+			{
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			
+			client.close();
+		}
+		catch (LipeRMIException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -80,6 +111,13 @@ public class ClientController implements MyServerObserver
 	{
 		myView.updateTokens(col, row, color);
 		
+	}
+
+
+	@Override
+	public void initBoard(int col, int row)
+	{
+		this.myView.initBoard(col, row);
 	}
 
 	

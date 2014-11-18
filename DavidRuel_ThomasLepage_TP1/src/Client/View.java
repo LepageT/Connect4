@@ -86,7 +86,7 @@ public class View extends JFrame implements Observer
 		this.setJMenuBar(menuBar);
 	}
 
-	public void initBoard(int nbRows, int nbColumns)
+	public void initBoard(int nbColumns, int nbRows)
 	{
 		this.centerPane.removeAll();
 		this.placeHolders = new MyImageContainer[nbRows][nbColumns];

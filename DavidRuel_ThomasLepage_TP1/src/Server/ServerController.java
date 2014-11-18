@@ -6,7 +6,6 @@ import Client.MyServerObserver;
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
 import net.sf.lipermi.net.Server;
-import ObserverPattern.Observer;
 import Server.Model.GameModel;
 
 public class ServerController extends Server implements IServer 
@@ -24,6 +23,7 @@ public class ServerController extends Server implements IServer
 			this.bind(SERVER_PORT, callHandler);
 			this.addServerListener(new ServerListner());
 			
+			this.initGame(6, 7, 4);
 			while(true)
 			{
 				try 
@@ -67,7 +67,6 @@ public class ServerController extends Server implements IServer
 	public void restartGame() 
 	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -89,5 +88,8 @@ public class ServerController extends Server implements IServer
 	{
 		// TODO Auto-generated method stub
 		this.game.registerObserver(observer);
+		// TODO send player turn
+		observer.initBoard(this.game.getHeight(), this.game.getWidth());
 	}
+	
 }
