@@ -44,7 +44,7 @@ public class GameController
 			}
 			
 			//this.view = new View(this);
-			this.view.initBoard(r, c);
+			//this.view.initBoard(r, c);
 			
 			//this.game.addListener(this.view);
 		}

@@ -13,6 +13,8 @@ public interface MyServerObserver
 	
 	public void updateTokens(int col, int row, int color);
 	
-	public void initBoard(int col, int row);
+	public void initBoard(int col, int row, int playerId);
+	
+	public void updateClearBoard(int nbColumns, int nbRows);
 	
 }
