@@ -42,10 +42,11 @@ public class GameController
 			{
 				this.view.dispose();
 			}
+			
 			//this.view = new View(this);
 			this.view.initBoard(r, c);
 			
-			this.game.addListener(this.view);
+			//this.game.addListener(this.view);
 		}
 		catch(Exception e)
 		{

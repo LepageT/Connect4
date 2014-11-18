@@ -1,11 +1,12 @@
 package Server.Model;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import Client.MyServerObserver;
 import ObserverPattern.Observable;
 
-public class GameModel extends Observable
+public class GameModel
 {
 	private Token[][] tokens;
 	
@@ -55,11 +56,12 @@ public class GameModel extends Observable
 			Token token = new Token(this.turn);
 			int row = this.addTokenToCol(token, col);
 			
+			
 			notifyObserversTokenAdded(col, row, this.turn);
 			
 			if(this.checkWin(col, row, token))
 			{
-				notifyMatchWin(this.turn);		
+				notifyObserversMatchWin(this.turn);		
 			}
 			else
 			{
@@ -68,13 +70,13 @@ public class GameModel extends Observable
 			
 			if(this.checkBoardFull())
 			{
-				notifyMatchNul();
+				notifyObserversMatchNul();
 			}
-			notifyChangeTurn(this.turn);
+			notifyObserversChangeTurn(this.turn);
 			
 			if(row >= this.height - 1)
 			{
-				notifyObserversColFull(col);
+				notifyObesrversColFull(col);
 			}
 		}
 		else
@@ -82,6 +84,128 @@ public class GameModel extends Observable
 			throw new IndexOutOfBoundsException();
 		}
 
+	}
+	
+	private synchronized void notifyObserversTokenAdded(final int col, final int row, final int turn)
+	{		
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateTokens(col, row, turn);		    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
+	}
+	
+	private synchronized void notifyObserversMatchWin(final int turn)
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateMatchWinBy(turn);			    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
+		
+	}
+	
+	private synchronized void notifyObserversMatchNul()
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateMatchNul();		    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
+	}
+	
+	private synchronized void notifyObserversChangeTurn(final int turn)
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updatePlayerTurn(turn);		    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
+	}
+	
+	private synchronized void notifyObesrversColFull(final int col) 
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateColFull(col);		    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
+		
 	}
 	
 	private int addTokenToCol(Token token, int col)
