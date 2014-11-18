@@ -16,6 +16,7 @@ public class ClientController implements MyServerObserver
 	ServerController serverController;
 	IServer stub;
 	private boolean isRunning = true;
+	private int playerId;
 
 	ClientController()
 	{
@@ -60,26 +61,24 @@ public class ClientController implements MyServerObserver
 	{
 		new ClientController();
 	}
-	
-	
-	
-	
+
 	public void restartGame()
 	{
+		System.out.println("restart 2");
 		this.stub.restartGame();
+	}
+	
+	public void resign(int i)
+	{
+		this.stub.resign(i);
 	}
 	
 	
 	public void addTokenToCol(int col)
 	{
-		this.stub.addTokenToCol(col);
+			this.stub.addTokenToCol(col);	
 	}
 	 
-
-
-
-
-
 	@Override
 	public void updatePlayerTurn(int playerNo) 
 	{
@@ -115,9 +114,15 @@ public class ClientController implements MyServerObserver
 
 
 	@Override
-	public void initBoard(int col, int row)
+	public void initBoard(int col, int row, int playerId)
 	{
-		this.myView.initBoard(col, row);
+		this.myView.initBoard(col, row, playerId);
+	}
+	
+	@Override
+	public void updateClearBoard(int nbColumns, int nbRows)
+	{
+		this.myView.clearBoard(nbColumns, nbRows);
 	}
 
 	

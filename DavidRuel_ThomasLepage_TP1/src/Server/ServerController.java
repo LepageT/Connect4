@@ -13,6 +13,8 @@ public class ServerController extends Server implements IServer
 	public static final int SERVER_PORT = 12345;
 
 	private GameModel game;
+	private int nextPlayerId = 1;
+	private boolean firstPlayerRestart = false;
 	
 	public ServerController()
 	{
@@ -67,6 +69,30 @@ public class ServerController extends Server implements IServer
 	public void restartGame() 
 	{
 		// TODO Auto-generated method stub
+		//TODO Add validation restart
+		System.out.println("restart called");
+		if(this.game.matchDone)
+		{
+			if(!this.firstPlayerRestart)
+			{
+				this.firstPlayerRestart = true;
+			}
+			else
+			{
+				try {
+					game.newGameModel(this.game.getWidth(), this.game.getHeight(), this.game.getWinCondition());
+					this.firstPlayerRestart = false;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else
+		{
+			//TODO sent other client confirmation
+		}
+
 	}
 
 	@Override
@@ -77,8 +103,9 @@ public class ServerController extends Server implements IServer
 	}
 
 	@Override
-	public void resign() 
+	public void resign(int i) 
 	{
+		game.resign(i);
 		// TODO Auto-generated method stub
 		
 	}
@@ -89,7 +116,8 @@ public class ServerController extends Server implements IServer
 		// TODO Auto-generated method stub
 		this.game.registerObserver(observer);
 		// TODO send player turn
-		observer.initBoard(this.game.getHeight(), this.game.getWidth());
+		observer.initBoard(this.game.getHeight(), this.game.getWidth(),this.nextPlayerId);
+		this.nextPlayerId++;
 	}
 	
 }

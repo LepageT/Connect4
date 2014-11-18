@@ -17,10 +17,13 @@ public class GameModel
 	
 	private int turn;
 	
+	public boolean matchDone;
+	
 	private LinkedList<MyServerObserver> observers;
 
 	public GameModel(int r, int c, int v) throws Exception
 	{
+		this.matchDone = false;
 		this.observers = new LinkedList<MyServerObserver>();
 
 		if(c < 2)
@@ -44,6 +47,33 @@ public class GameModel
 		this.turn = 1;
 	}
 	
+	public void newGameModel(int r, int c, int v) throws Exception
+	{
+		this.matchDone = false;
+
+		if(c < 2)
+		{
+			throw new Exception("Le nombre de colones doit être supérieur à 1.");
+		}
+		if(r < 2)
+		{
+			throw new Exception("Le nombre de rangées doit être supérieur à 1.");
+		}
+		if(v < 3)
+		{
+			throw new Exception("La condition pour gagner doit être supérieur à 2.");
+		}
+		this.tokens = new Token[c][r];
+		
+		this.height = r;
+		this.width = c;
+		this.winConditionSequence = v;
+
+		this.turn = 1;
+		
+		notifyClearBoard();
+	}
+	
 	public void registerObserver(MyServerObserver observer)
 	{
 		this.observers.add(observer);
@@ -61,6 +91,7 @@ public class GameModel
 			
 			if(this.checkWin(col, row, token))
 			{
+				this.matchDone = true;
 				notifyObserversMatchWin(this.turn);		
 			}
 			else
@@ -70,6 +101,7 @@ public class GameModel
 			
 			if(this.checkBoardFull())
 			{
+				this.matchDone = true;
 				notifyObserversMatchNul();
 			}
 			notifyObserversChangeTurn(this.turn);
@@ -84,6 +116,30 @@ public class GameModel
 			throw new IndexOutOfBoundsException();
 		}
 
+	}
+	
+	public void resign(int i)
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateMatchWinBy(turn);			    
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
 	}
 	
 	private synchronized void notifyObserversTokenAdded(final int col, final int row, final int turn)
@@ -206,6 +262,30 @@ public class GameModel
 			}
 		}	
 		
+	}
+	
+	private synchronized void notifyClearBoard()
+	{
+		ListIterator<MyServerObserver> iterator = this.observers.listIterator();
+		
+		while(iterator.hasNext())
+		{
+			try
+			{
+				final MyServerObserver current = iterator.next();
+				Thread thread = new Thread(){
+				    public void run(){
+				    	current.updateClearBoard(getWidth(), getHeight()); 
+				    }
+				  };
+
+				  thread.start();
+			}
+			catch (IllegalStateException e)
+			{				
+				iterator.remove();
+			}
+		}	
 	}
 	
 	private int addTokenToCol(Token token, int col)
