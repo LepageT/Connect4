@@ -19,9 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ObserverPattern.Observer;
-
-public class View extends JFrame implements Observer
+public class View extends JFrame
 {
 	private static final String IMAGE_PATH = "./IMAGES/Connect4/";
 
@@ -238,7 +236,7 @@ public class View extends JFrame implements Observer
 				if(click == JOptionPane.YES_OPTION)
 				{
 					System.out.println("restart");
-						controller.restartGame();
+					controller.restartGame();
 				}	
 			}
 			else 
@@ -258,61 +256,51 @@ public class View extends JFrame implements Observer
 		}
 	}
 
-	@Override
-	public void updatePlayerTurn(int turn) {
-		// TODO Auto-generated method stub
+	public void updatePlayerTurn(int turn) 
+	{
 		playerTurn = turn;
 		this.message.setText("Tour du joueur " + turn);
 	}
 
-	@Override
-	public void updateTokens(int col, int row, int color) {
-		// TODO Auto-generated method stub
+	public void updateTokens(int col, int row, int color)
+	{
 		((MyImageContainer) placeHolders[row][col]).setImageIcon(color==1?this.green:this.red);
 	}
 
-	@Override
-	public void updateColFull(int i) {
-		// TODO Auto-generated method stub
+	public void updateColFull(int i) 
+	{
 		this.controlButtons[i].setEnabled(false);
 	} 
 	
-
-	@Override
 	public void updateMatchNul() 
-	{
-		//JOptionPane.showMessageDialog(null, "Match nul");
-		
+	{		
 		int click = JOptionPane.showConfirmDialog(null, "Partie nulle. Voulez-vous recommencer?","Partie nulle",JOptionPane.YES_NO_OPTION);
-		if(click == JOptionPane.YES_OPTION)
-		{
-			this.controller.restartGame();
-		}
-		else
-		{
-			this.dispose();
-		}
+		restartOptionPane(click);
 	}
 
-	@Override
 	public void updateMatchWinBy(int i)
 	{			
 
 		if(playerId < 3)
 		{				
-			System.out.println("Action on menu");
 			int click = JOptionPane.showConfirmDialog(null, "Voulez-vous recommencer?","Recommencer?",JOptionPane.YES_NO_OPTION);
-			if(click == JOptionPane.YES_OPTION)
-			{
-				System.out.println("restart");
-					controller.restartGame();
-			}
-			else
-			{
-				this.dispose();
-			}	
+			restartOptionPane(click);
 		}
 		
+	}
+	
+	public void restartOptionPane(int click)
+	{
+		if(click == JOptionPane.YES_OPTION)
+		{
+			System.out.println("restart");
+				controller.restartGame();
+		}
+		else
+		{
+			this.dispose();
+			controller.stopClient();
+		}	
 	}
 	
 	

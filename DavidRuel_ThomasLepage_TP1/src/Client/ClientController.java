@@ -16,7 +16,6 @@ public class ClientController implements MyServerObserver
 	ServerController serverController;
 	IServer stub;
 	private boolean isRunning = true;
-	private int playerId;
 
 	ClientController()
 	{
@@ -88,8 +87,7 @@ public class ClientController implements MyServerObserver
 	@Override
 	public void updateColFull(int col) 
 	{
-		myView.updateColFull(col);
-		
+		myView.updateColFull(col);	
 	}
 
 	@Override
@@ -101,17 +99,14 @@ public class ClientController implements MyServerObserver
 	@Override
 	public void updateMatchWinBy(int playerNo) 
 	{
-		myView.updateMatchWinBy(playerNo);
-		
+		myView.updateMatchWinBy(playerNo);	
 	}
 
 	@Override
 	public void updateTokens(int col, int row, int color) 
 	{
-		myView.updateTokens(col, row, color);
-		
+		myView.updateTokens(col, row, color);	
 	}
-
 
 	@Override
 	public void initBoard(int col, int row, int playerId)
@@ -125,5 +120,9 @@ public class ClientController implements MyServerObserver
 		this.myView.clearBoard(nbColumns, nbRows);
 	}
 
+	public void stopClient()
+	{
+		this.isRunning = false;
+	}
 	
 }

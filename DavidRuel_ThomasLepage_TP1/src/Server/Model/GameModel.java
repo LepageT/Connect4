@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import Client.MyServerObserver;
-import ObserverPattern.Observable;
 
 public class GameModel
 {
@@ -307,7 +306,7 @@ public class GameModel
 	
 	private boolean checkWin(int col, int row, Token t)
 	{
-		int lineSize = countLineSize(col, row, Direction.B, t); //Verticale
+		int lineSize = checkWinVertical(col, row, t);
 		if(lineSize >= this.winConditionSequence)
 		{
 			return true;
@@ -334,6 +333,42 @@ public class GameModel
 		return false;
 	}
 	
+	private int checkWinVertical(int col, int row, Token t)
+	{
+		int count = 0;
+		if(this.positionInBoard(col, row))
+		{
+			if(this.tokens[col][row] != null)
+			{
+				if(this.tokens[col][row].getId() == t.getId())
+				{
+					count = 1 + checkWinVertical(col, row - 1, t);
+				}
+			}
+		}
+		return count;
+	}
+	
+	private int checkWinHorizontal(int col, int row, Token t)
+	{
+		int count = 0;
+		if(this.positionInBoard(col, row))
+		{
+			if(this.tokens[col][row] != null)
+			{
+				if(this.tokens[col][row].getId() == t.getId())
+				{
+					count = 1 + checkWinVertical(col + 1, row, t);
+				}
+				if(this.tokens[col][row].getId() == t.getId())
+				{
+					count = 1 + checkWinVertical(col - 1, row, t);
+				}
+			}
+		}
+		return count;
+	}
+	
 	private int countLineSize(int col, int row, Direction direction, Token t)
 	{
 		if(this.positionInBoard(col, row))
@@ -344,8 +379,6 @@ public class GameModel
 				{
 					switch (direction)
 					{
-						case B:
-							return 1 + countLineSize(col, row - 1, direction, t);	
 						case D:
 							return 1 + countLineSize(col + 1, row, direction, t);
 						case G:
