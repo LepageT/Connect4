@@ -294,12 +294,12 @@ public class View extends JFrame
 		if(click == JOptionPane.YES_OPTION)
 		{
 			System.out.println("restart");
-				controller.restartGame();
+			controller.restartGame();
 		}
 		else
 		{
-			this.dispose();
 			controller.stopClient();
+			this.dispose();
 		}	
 	}
 	

@@ -31,19 +31,21 @@ public class ClientController implements MyServerObserver
 			Client client = new Client("127.0.0.1", ServerController.SERVER_PORT, callHandler);
 			stub = client.getGlobal(IServer.class);
 			stub.registerObserver(this);
-			
-			while(isRunning)
-			{}
-			try 
+			synchronized (this)
 			{
-				Thread.sleep(1000);
-			} 
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
+				while(isRunning)
+				{}
+				try 
+				{
+					Thread.sleep(1000);
+				} 
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
+				client.close();
 			}
-			
-			client.close();
 		}
 		catch (LipeRMIException e) 
 		{
@@ -123,6 +125,7 @@ public class ClientController implements MyServerObserver
 	public void stopClient()
 	{
 		this.isRunning = false;
+		System.exit(0);
 	}
-	
+		
 }
