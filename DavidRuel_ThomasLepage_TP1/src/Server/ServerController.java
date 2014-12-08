@@ -22,7 +22,7 @@ public class ServerController extends Server implements IServer
 		try 
 		{
 			callHandler.registerGlobal(IServer.class, this);
-			this.bind(SERVER_PORT, callHandler);
+			this.bind(ServerListner.SERVER_PORT, callHandler);
 			this.addServerListener(new ServerListner());
 			
 			this.initGame(6, 7, 4);
@@ -116,7 +116,7 @@ public class ServerController extends Server implements IServer
 		// TODO Auto-generated method stub
 		this.game.registerObserver(observer);
 		// TODO send player turn
-		observer.initBoard(this.game.getHeight(), this.game.getWidth(),this.nextPlayerId);
+		observer.initBoard(this.game.getWidth(), this.game.getHeight(),this.nextPlayerId);
 		this.nextPlayerId++;
 	}
 	

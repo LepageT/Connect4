@@ -16,7 +16,6 @@ public class ClientController implements MyServerObserver
 	ServerController serverController;
 	IServer stub;
 	private boolean isRunning = true;
-	private int playerId;
 
 	ClientController()
 	{
@@ -32,19 +31,21 @@ public class ClientController implements MyServerObserver
 			Client client = new Client("127.0.0.1", ServerController.SERVER_PORT, callHandler);
 			stub = client.getGlobal(IServer.class);
 			stub.registerObserver(this);
-			
-			while(isRunning)
-			{}
-			try 
+			synchronized (this)
 			{
-				Thread.sleep(1000);
-			} 
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
+				while(isRunning)
+				{}
+				try 
+				{
+					Thread.sleep(1000);
+				} 
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
+				client.close();
 			}
-			
-			client.close();
 		}
 		catch (LipeRMIException e) 
 		{
@@ -88,8 +89,7 @@ public class ClientController implements MyServerObserver
 	@Override
 	public void updateColFull(int col) 
 	{
-		myView.updateColFull(col);
-		
+		myView.updateColFull(col);	
 	}
 
 	@Override
@@ -101,17 +101,14 @@ public class ClientController implements MyServerObserver
 	@Override
 	public void updateMatchWinBy(int playerNo) 
 	{
-		myView.updateMatchWinBy(playerNo);
-		
+		myView.updateMatchWinBy(playerNo);	
 	}
 
 	@Override
 	public void updateTokens(int col, int row, int color) 
 	{
-		myView.updateTokens(col, row, color);
-		
+		myView.updateTokens(col, row, color);	
 	}
-
 
 	@Override
 	public void initBoard(int col, int row, int playerId)
@@ -125,5 +122,10 @@ public class ClientController implements MyServerObserver
 		this.myView.clearBoard(nbColumns, nbRows);
 	}
 
-	
+	public void stopClient()
+	{
+		this.isRunning = false;
+		System.exit(0);
+	}
+		
 }
